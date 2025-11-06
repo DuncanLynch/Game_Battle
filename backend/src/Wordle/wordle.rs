@@ -24,12 +24,12 @@ pub struct Guess {
 pub struct Player {
     pub name: String,
     pub guesses: Vec<Option<Guess>>,
-    pub token: uuid::UUID,
+    pub token: String,
     pub finished: bool,
 }
 
 impl Player {
-    pub fn new(name: String, token: uuid::UUID) -> Self {
+    pub fn new(name: String, token: String) -> Self {
         Self {
             name,
             guesses: vec![None; 6],
@@ -47,16 +47,7 @@ pub struct GameSession {
 }
 
 impl GameSession {
-    pub fn new(creator: Player, session_password: &str) -> Self {
-        GameSession {
-            players: vec![creator],
-            word: "zzzzz",
-            session_password,
-            state: Waiting
-        }
-    }
-
-    pub fn make_guess(&self, guess: &str, token: &uuid::UUID) -> [LetterType; 5] {
+    pub fn make_guess(&self, guess: &str, token: &str) -> [LetterType; 5] {
         let guess_chars: Vec<char> = guess.chars().collect();
         let word_chars: Vec<char> = self.word.chars().collect();
         let mut letters: [LetterType; 5]  = [LetterType::Missing; 5];
@@ -85,6 +76,4 @@ impl GameSession {
         }
         true
     }
-
-    
 }
